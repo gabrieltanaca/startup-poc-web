@@ -89,7 +89,7 @@ export const LoginForm = ({ className, ...props }: HTMLAttributes<HTMLFormElemen
 
       <Field
         id="password"
-        label="Senha"
+        label={t.auth.passwordLabel}
         type="password"
         placeholder="••••••••"
         {...register('password')}
@@ -101,7 +101,7 @@ export const LoginForm = ({ className, ...props }: HTMLAttributes<HTMLFormElemen
       <div className="space-y-2">
         <div className="text-right">
           <a href="#" className="text-primary text-sm hover:underline">
-            Esqueci a senha?
+            {t.auth.forgotPassword}
           </a>
         </div>
       </div>
@@ -110,10 +110,10 @@ export const LoginForm = ({ className, ...props }: HTMLAttributes<HTMLFormElemen
         {isLoading || busy ? (
           <>
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            Entrando...
+            {t.auth.btnEntering}
           </>
         ) : (
-          'Entrar'
+          `${t.auth.btnEnter}`
         )}
       </Button>
     </form>

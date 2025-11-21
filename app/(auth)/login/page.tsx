@@ -1,9 +1,13 @@
+'use client';
+
 import { LoginForm } from '@/components/forms/LoginForm';
 import Card from '@/components/Card';
+import { useLanguage } from '@/contexts/Language';
 
 export default function LoginPage() {
+  const { t } = useLanguage();
   return (
-    <Card title="Acesso ao Portal" description="Faça login para gerenciar os dados de localização.">
+    <Card title={t.auth.accessTitle} description={t.auth.description}>
       <LoginForm />
     </Card>
   );
