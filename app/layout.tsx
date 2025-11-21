@@ -25,11 +25,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const theme = 'dark';
-
   return (
     <html lang="pt">
-      <body className={cn('h-svh', 'antialiased', theme, geistSans.variable, geistMono.variable)}>
+      <body className={cn('h-svh', 'antialiased', geistSans.variable, geistMono.variable)}>
         <ContextProviders>
           {children}
           <Toaster />

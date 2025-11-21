@@ -8,6 +8,17 @@ export const pt = {
     invalidFields: 'Por favor, preencha o e-mail e a senha.',
     invalidCreds: 'Credenciais inválidas. Verifique seu e-mail e senha.',
   },
+  //------------------- IDIOMA -------------------
+  lang: {
+    label: 'Idioma',
+    name: 'Português',
+  },
+  //------------------- TEMA -------------------
+  theme: {
+    label: 'Tema',
+    dark: 'Dark',
+    light: 'Light',
+  },
   // ------------------- AUTENTICAÇÃO -------------------
   auth: {
     accessTitle: 'Acesso ao Portal',
@@ -25,6 +36,7 @@ export const pt = {
     dashboard: 'Dashboard',
     history: 'Histórico',
     config: 'Configurações',
+    statistics: 'Estatísticas',
     logout: 'Sair',
   },
   // ------------------- PÁGINA DE BUSCA -------------------

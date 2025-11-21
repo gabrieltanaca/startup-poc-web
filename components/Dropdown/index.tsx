@@ -20,12 +20,20 @@ type DropdownProps = {
   triggerTitle?: string;
   label?: string;
   size?: number;
+  defaultValue?: DropdownOption;
   options: DropdownOption[];
   onSelect: (value: DropdownOption) => void;
 };
 
-export function Dropdown({ triggerTitle, label, options, onSelect, size = 120 }: DropdownProps) {
-  const [selectedOpt, setSelectedOpt] = useState<DropdownOption>(options[0]);
+export const Dropdown = ({
+  triggerTitle,
+  label,
+  options,
+  defaultValue,
+  onSelect,
+  size = 120,
+}: DropdownProps) => {
+  const [selectedOpt, setSelectedOpt] = useState<DropdownOption>(defaultValue || options[0]);
 
   const onSelectOpt = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, item: DropdownOption) => {
     setSelectedOpt(item);
@@ -35,12 +43,14 @@ export function Dropdown({ triggerTitle, label, options, onSelect, size = 120 }:
 
   return (
     <div className={cn('flex', 'flex-col', 'gap-2', `max-w-[${size}px]`, 'w-full')}>
-      {label && <Label>{label}</Label>}
+      {label && <Label className="text-sm">{label}</Label>}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" className="flex-1 justify-between">
-            {triggerTitle || selectedOpt.label}
-          </Button>
+          <div className="">
+            <Button variant="outline" className="flex-1 justify-between">
+              {triggerTitle || selectedOpt.label}
+            </Button>
+          </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           {options.map((item) => (
@@ -52,4 +62,4 @@ export function Dropdown({ triggerTitle, label, options, onSelect, size = 120 }:
       </DropdownMenu>
     </div>
   );
-}
+};

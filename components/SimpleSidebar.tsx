@@ -3,8 +3,10 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import {
+  ChartColumnIncreasing,
   HistoryIcon,
   LayoutDashboardIcon,
+  LogOutIcon,
   PanelLeftIcon,
   SearchIcon,
   Settings2Icon,
@@ -13,6 +15,9 @@ import { Button } from './ui/button';
 import { useLanguage } from '@/contexts/Language';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
+import LanguageSelect from '@/components/LanguageSelect';
+import ThemeSwitch from '@/components/ThemeSwitch';
+import { Logo } from './Logo';
 
 export type SimpleRoute = {
   label: string;
@@ -32,6 +37,11 @@ export default function SimpleSidebar() {
       icon: <LayoutDashboardIcon className="h-5 w-5" />,
     },
     { label: t.sidebar.history, href: '/history', icon: <HistoryIcon className="h-5 w-5" /> },
+    {
+      label: t.sidebar.statistics,
+      href: '/statistics',
+      icon: <ChartColumnIncreasing className="h-5 w-5" />,
+    },
     { label: t.sidebar.config, href: '/settings', icon: <Settings2Icon className="h-5 w-5" /> },
   ];
 
@@ -47,23 +57,14 @@ export default function SimpleSidebar() {
       <div className={cn('flex items-center justify-between gap-2 px-2 py-2', !open && 'flex-col')}>
         {open && (
           <div className="flex items-center gap-2">
-            <div className="text-sidebar-primary-foreground rounded-full bg-stone-200 p-1">
-              <Image src="/logo.png" alt="logo" width={40} height={40} className="object-cover" />
-            </div>
-            {open && <span className="text-xl font-semibold">{t.general.portalTitle}</span>}
+            <Logo />
+            <span className="text-xl font-semibold">{t.general.portalTitle}</span>
           </div>
         )}
         <Button variant="ghost" onClick={() => setOpen((s) => !s)}>
           <PanelLeftIcon className={`h-4 w-4 transition-transform ${open ? '' : 'rotate-180'}`} />
         </Button>
-        {!open && (
-          <div className="flex items-center gap-2">
-            <div className="text-sidebar-primary-foreground rounded-full bg-stone-200 p-1">
-              <Image src="/logo.png" alt="logo" width={40} height={40} className="object-cover" />
-            </div>
-            {open && <span className="text-xl font-semibold">{t.general.portalTitle}</span>}
-          </div>
-        )}
+        {!open && <Logo />}
       </div>
 
       <nav className="mt-4 flex flex-col gap-1 px-1">
@@ -71,7 +72,11 @@ export default function SimpleSidebar() {
           <Link
             key={r.href}
             href={r.href}
-            className="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground flex items-center gap-3 rounded-md px-3 py-2"
+            className={cn(
+              'flex items-center gap-3 rounded-md px-3 py-2',
+              !open && 'justify-center',
+              'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground',
+            )}
           >
             <span className="flex size-4 items-center justify-center">
               {r.icon ?? <span className="w-4" />}
@@ -81,7 +86,55 @@ export default function SimpleSidebar() {
         ))}
       </nav>
 
-      <footer className="mt-auto p-2"></footer>
+      <div className="mt-4 px-2">
+        <div className="flex items-center justify-between">
+          <span className="text-sm">{t.search.filters}</span>
+          <ThemeSwitch />
+        </div>
+        <div className="mt-2">
+          <LanguageSelect />
+        </div>
+      </div>
+
+      <footer className="mt-auto p-2">
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center gap-2">
+            <div
+              className={cn(
+                'bg-card flex w-full items-center gap-3 rounded-md',
+                open && 'border-border border p-2',
+              )}
+            >
+              <div className="text-sidebar-primary-foreground flex size-9 items-center justify-center overflow-hidden rounded-full bg-stone-200">
+                <span className="text-sm font-medium">U</span>
+              </div>
+              {open && (
+                <div>
+                  <p className="text-sm font-medium">Usuário</p>
+                  <p className="text-sidebar-foreground/70 text-xs">user@example.com</p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <Button
+            variant="ghost"
+            onClick={() => {
+              try {
+                localStorage.removeItem('app_token');
+                localStorage.removeItem('app_language');
+              } catch (e) {}
+              window.location.href = '/';
+            }}
+            className="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground flex cursor-pointer justify-start gap-3 rounded-md px-3 py-2"
+          >
+            <span className="flex size-4 items-center justify-center">
+              <LogOutIcon className="h-5 w-5" />
+            </span>
+            {open && <span className="truncate">{t.sidebar.logout}</span>}
+          </Button>
+        </div>
+      </footer>
     </aside>
   );
 }

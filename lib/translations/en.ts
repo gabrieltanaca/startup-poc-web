@@ -1,4 +1,6 @@
-export const en = {
+import { TranslateType } from './pt';
+
+export const en: TranslateType = {
   // ------------------- GENERAL -------------------
   general: {
     portalTitle: 'Ponto Certo',
@@ -7,6 +9,17 @@ export const en = {
     loginSuccess: 'Login successful! Redirecting...',
     invalidFields: 'Please enter your email and password.',
     invalidCreds: 'Invalid credentials. Check your email and password.',
+  },
+  //------------------- IDIOMA -------------------
+  lang: {
+    label: 'Language',
+    name: 'English',
+  },
+  // ------------------- THEME -------------------
+  theme: {
+    label: 'Theme',
+    dark: 'Dark',
+    light: 'Light',
   },
   // ------------------- AUTHENTICATION -------------------
   auth: {
@@ -25,6 +38,7 @@ export const en = {
     dashboard: 'Dashboard',
     history: 'History',
     config: 'Settings',
+    statistics: 'Statistics',
     logout: 'Logout',
   },
   // ------------------- SEARCH PAGE -------------------
