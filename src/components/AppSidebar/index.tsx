@@ -1,35 +1,10 @@
 'use client';
 
-import Link from 'next/link';
-import {
-  ChartColumnIncreasing,
-  HistoryIcon,
-  LayoutDashboardIcon,
-  LogOutIcon,
-  PanelLeftIcon,
-  SearchIcon,
-  Settings2Icon,
-} from 'lucide-react';
-import {
-  Sidebar,
-  SidebarMenu,
-  SidebarMenuItem,
-  SidebarMenuButton,
-  SidebarHeader,
-  SidebarFooter,
-  SidebarSeparator,
-  useSidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupLabel,
-  SidebarGroupContent,
-} from '../ui/sidebar';
+import { PanelLeftIcon } from 'lucide-react';
+import { Sidebar, SidebarHeader, SidebarSeparator, useSidebar } from '../ui/sidebar';
 import { useLanguage } from '@/contexts/Language';
-import ThemeSwitch from '@/components/ThemeSwitch';
-import LanguageSelect from '@/components/LanguageSelect';
 import { Logo } from '../Logo';
 import { Button } from '../ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import Content from './__features/Content';
 import Footer from './__features/Footer';
 import { cn } from '@/lib/utils';

@@ -1,31 +1,39 @@
-import { ToastContext } from '@/contexts/Toast';
-import { ToastOptions } from '@/types/toast';
-import { useCallback, useContext } from 'react';
+'use client';
 
-let count = 0;
-
-export function generateId() {
-  count = (count + 1) % 1000;
-  return `toast-${Date.now()}-${count}`;
-}
+import { ExternalToast, toast } from 'sonner';
 
 export const useToast = () => {
-  const context = useContext(ToastContext);
-
-  if (!context) {
-    throw new Error('useToast deve ser usado dentro de um ToastProvider (Toaster)');
-  }
-
-  const { addToast, dismissToast, updateToast } = context;
-
-  const toast = useCallback(
-    (props: ToastOptions) => {
-      const id = generateId();
-      addToast({ ...props, id, variant: props.variant || 'default' });
-      return { id };
+  return {
+    success: (message: string, options?: ExternalToast) => {
+      toast.success(message, {
+        duration: 2500,
+        position: 'top-right',
+        className: '!bg-green-600',
+        ...options,
+      });
     },
-    [addToast],
-  );
 
-  return { toast, dismiss: dismissToast, update: updateToast };
+    error: (message: string, options?: ExternalToast) => {
+      toast.error(message, {
+        duration: 2500,
+        position: 'top-right',
+        className: '!bg-red-600',
+        ...options,
+      });
+    },
+
+    info: (message: string, options?: ExternalToast) => {
+      toast.info(message, {
+        duration: 2500,
+        position: 'top-right',
+        className: '!bg-blue-600',
+
+        ...options,
+      });
+    },
+
+    default: (message: string, options?: ExternalToast) => {
+      toast(message, { duration: 2500, position: 'top-right', ...options });
+    },
+  };
 };

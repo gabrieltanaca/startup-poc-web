@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect } from 'react';
 import dynamic from 'next/dynamic';
-import { SlidersHorizontal, GripVertical } from 'lucide-react';
+import { SlidersHorizontal, GripVertical, Loader2 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 
@@ -26,7 +26,7 @@ const DynamicMapComponent = dynamic(() => import('@/components/DynamicMap'), {
   ),
 });
 
-export default function SearchPage() {
+const SearchPage = () => {
   const { t } = useLanguage();
 
   const showOpts = getShowOptions(t);
@@ -38,11 +38,14 @@ export default function SearchPage() {
 
   const [selectShowOpt, setSelectShowOpt] = useState<DropdownOption>(showOpts[0]);
   const [selectSortOpt, setSelectSortOpt] = useState<DropdownOption>(sortOpts[0]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const searchPlaces = async () => {
+    setIsLoading(true);
     const response = await getSearch(searchTerm);
 
     setPlaces(response?.places || []);
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -89,7 +92,12 @@ export default function SearchPage() {
         <Separator className="mb-4" />
 
         <div className="flex-1 space-y-3 overflow-y-auto pr-2">
-          {places.length === 0 ? (
+          {isLoading ? (
+            <div className="flex items-center justify-center gap-1">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              <p className="text-muted-foreground">Buscando...</p>
+            </div>
+          ) : places.length === 0 ? (
             <p className="text-muted-foreground text-center">Nenhum lugar encontrado.</p>
           ) : (
             places.map((place) => (
@@ -109,4 +117,6 @@ export default function SearchPage() {
       </section>
     </div>
   );
-}
+};
+
+export default SearchPage;

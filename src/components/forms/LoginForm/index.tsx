@@ -13,6 +13,7 @@ import { useLanguage } from '@/contexts/Language';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { createSession } from '@/lib/session';
 
 const loginSchema = z.object({
   email: z.string().email({ message: 'E-mail inválido' }),
@@ -23,10 +24,9 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 
 export const LoginForm = ({ className, ...props }: HTMLAttributes<HTMLFormElement>) => {
   const router = useRouter();
-  const { toast } = useToast();
+  const toast = useToast();
   const { t } = useLanguage();
 
-  const [busy, setBusy] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -39,36 +39,22 @@ export const LoginForm = ({ className, ...props }: HTMLAttributes<HTMLFormElemen
   });
 
   const onSubmit = async (data: LoginFormValues) => {
-    setBusy(true);
     setIsLoading(true);
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data: auth, error } = await supabase.auth.signInWithPassword({
         email: data.email,
         password: data.password,
       });
 
       if (error) {
-        toast({
-          title: 'Falha na Autenticação',
-          description: error.message || 'Credenciais inválidas',
-          variant: 'destructive',
-        });
+        toast.error(`Falha na Autenticação. Erro: Credenciais Inválidas`);
       } else {
-        toast({
-          title: 'Login bem-sucedido!',
-          description: 'Redirecionando...',
-        });
-        router.push('/');
+        toast.success('Login bem-sucedido! Sincronizando sessão...');
+        await createSession(auth.user.id);
       }
     } catch (err) {
-      toast({
-        title: 'Erro',
-        description: 'Ocorreu um erro ao tentar logar.',
-        variant: 'destructive',
-      });
-    } finally {
-      setBusy(false);
+      toast.error(`Ocorreu um erro. Verifique a conexão. Erro: ${err}`);
     }
 
     setIsLoading(false);
@@ -83,7 +69,7 @@ export const LoginForm = ({ className, ...props }: HTMLAttributes<HTMLFormElemen
         placeholder={t.auth.placeholderEmail}
         {...register('email')}
         icon={Mail}
-        disabled={isLoading || busy}
+        disabled={isLoading}
       />
       {errors.email && <p className="text-destructive text-sm">{errors.email.message}</p>}
 
@@ -94,7 +80,7 @@ export const LoginForm = ({ className, ...props }: HTMLAttributes<HTMLFormElemen
         placeholder="••••••••"
         {...register('password')}
         icon={Lock}
-        disabled={isLoading || busy}
+        disabled={isLoading}
       />
       {errors.password && <p className="text-destructive text-sm">{errors.password.message}</p>}
 
@@ -106,8 +92,8 @@ export const LoginForm = ({ className, ...props }: HTMLAttributes<HTMLFormElemen
         </div>
       </div>
 
-      <Button type="submit" className="w-full" disabled={isLoading || busy}>
-        {isLoading || busy ? (
+      <Button type="submit" className="w-full" disabled={isLoading}>
+        {isLoading ? (
           <>
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             {t.auth.btnEntering}

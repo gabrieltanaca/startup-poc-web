@@ -3,19 +3,29 @@ import ThemeSwitch from '@/components/ThemeSwitch';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { SidebarFooter, SidebarSeparator } from '@/components/ui/sidebar';
+import { deleteSession } from '@/lib/session';
+import { supabase } from '@/lib/supabase/client';
 import { TranslateType } from '@/lib/translations/pt';
 import { cn } from '@/lib/utils';
 import { LogOutIcon } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 type FooterProps = { open: boolean; translation: TranslateType };
 
 const Footer = ({ open, translation: t }: FooterProps) => {
-  const handleLogout = () => {
-    try {
-      localStorage.removeItem('app_token');
-      localStorage.removeItem('app_language');
-    } catch (e) {}
-    window.location.href = '/login';
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+      console.error('Erro ao fazer logout:', error);
+      return;
+    }
+
+    await deleteSession();
+    router.push('/login');
+    router.refresh();
   };
 
   return (

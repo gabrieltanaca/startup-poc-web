@@ -1,6 +1,6 @@
 import { LayoutDashboard } from 'lucide-react';
 
-function DashboardPage() {
+const DashboardPage = () => {
   return (
     <div className="space-y-6 p-8">
       <header className="flex items-center space-x-4 border-b border-gray-200 pb-4">
@@ -28,6 +28,6 @@ function DashboardPage() {
       </footer>
     </div>
   );
-}
+};
 
 export default DashboardPage;

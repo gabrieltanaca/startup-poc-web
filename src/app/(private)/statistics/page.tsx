@@ -6,7 +6,7 @@ import MockChart from './__features/MockChart';
 import MetricCard from './__features/MetricCard';
 import { kpiMetrics, monthlyRevenueData } from './constants';
 
-function StatisticsPage() {
+const StatisticsPage = () => {
   const [timeframe, setTimeframe] = useState('Últimos 7 Dias');
 
   return (
@@ -61,6 +61,6 @@ function StatisticsPage() {
       </footer>
     </div>
   );
-}
+};
 
 export default StatisticsPage;
