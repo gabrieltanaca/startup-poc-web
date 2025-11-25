@@ -1,37 +1,150 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📍 Ponto Certo - Portal de Buscas
 
-## Getting Started
+Este projeto é uma POC construída com Next.js, focado em gerenciamento de buscas e histórico de localização, com algumas telas com visualização de dados e monitoramento de desempenho.
 
-First, run the development server:
+# 🛠️ Tecnologias Utilizadas
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+O projeto utiliza um stack moderno e robusto:
+
+- Framework: Next.js (App Router)
+
+* Linguagem: TypeScript
+* Estilização: TailwindCSS
+* Componentes UI: RadixUI + Shadcn/UI
+* Formulários: React Hook Form e Zod
+* Banco de Dados/Autenticação: Supabase (opcional, configurado via ENVs)
+
+# 💻 Estrutura das Páginas e Funcionalidades
+
+O portal é composto por seis páginas principais, cada uma com um propósito distinto:
+
+#### 1. Acesso ao Portal (login.tsx)
+
+**Utilização:**
+
+- Tela de autenticação (Login). Valida credenciais (e-mail e senha) para dar acesso ao sistema.
+
+**Chamadas:**
+
+- **SUPABASE auth signInWithPassword:** Verificação de senha e email e criação de token
+- **SUPABASE auth signOut:** Método para remoção do token válido no Supabase
+
+#### 2. Dashboard (dashboard.tsx)
+
+**Utilização:**
+
+- **Visão Geral:** Exibe as principais métricas de negócio (Total de Buscas, Tempo Médio de Resposta, Usuários Ativos, Faturamento) em um carrossel responsivo.
+- **Monitoramento:** Apresenta um gráfico de área (Visão Geral de Uso) e um painel de Histórico de Operações recentes.
+
+**Chamadas:**
+
+- Nenhuma chamada de API direta neste componente.
+
+#### 3. Histórico de Pesquisas (history.tsx)
+
+**Utilização:**
+
+- **Visualização:** Tabela paginada e pesquisável que lista o histórico completo de buscas do usuário.
+- **Gerenciamento:** Permite a exclusão de registros individuais ou a exclusão em massa de todo o histórico (requer confirmação via modal).
+
+**Chamadas:**
+
+- **DELETE /api/history/{id}:** Exclui um registro específico.
+- **GET /api/history:** Busca todos os registros do histórico.
+
+#### 4. Pesquisa de Locais (search.tsx)
+
+**Utilização:**
+
+- **Busca:** Interface para pesquisar locais (pontos de interesse) com filtros dinâmicos de exibição e ordenação.
+- **Busca Inteligente:** Alterna para um modo de busca que utiliza IA.
+- **Visualização:** Apresenta resultados em uma lista lateral e em um mapa dinâmico (componente DynamicMapComponent).
+
+**Chamadas:**
+
+- **GET /api/search:**Executa a busca padrão de locais.
+- **GET /api/smart-search:** Executa a busca aprimorada por IA.
+
+#### 5. Estatísticas Administrativas (analytics.tsx)
+
+**Utilização:**
+
+- **Painel Admin:** Exibe métricas de infraestrutura (Total de Registros BD, Erros Recentes, Tempo Médio de Consulta).
+- **Logs:** Tabela de logs de operação recentes, filtráveis por Período e Nível (INFO, WARN, ERROR).
+
+**Chamadas:**
+
+- **MOCKUP:** Simula a busca de dados ao aplicar filtros de data e nível de log.
+
+#### 6. Configurações (settings.tsx)
+
+**Utilização:**
+
+- Segurança: Formulário para alteração de senha (ChangePasswordForm).
+- Gerais: Opções para ajustar o Tema (Light, Dark, System), o Idioma da aplicação e o status de Notificações por Email.
+
+**Chamadas:**
+
+- **MockUpPassword:** Simula a mudança de senha no supabase. (Não é feito a mudança por medidas de segurança)
+
+# 🚀 Instruções de Instalação
+
+Siga os passos abaixo para configurar e executar o projeto em seu ambiente de desenvolvimento local.
+
+**Pré-requisitos:**
+
+- **Node.js** (versão **18.x** ou superior)
+- npm ou yarn
+
+## 1. Clonar o Repositório
+
+```
+git clone https://github.com/gabrieltanaca/startup-poc-web.git
+cd ponto-certo
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 2. Instalar Dependências
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+npm install
+# or
+yarn install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 3. Configurar Variáveis de Ambiente
 
-## Learn More
+Crie um arquivo chamado .env na raiz do projeto e adicione as variáveis de ambiente.
 
-To learn more about Next.js, take a look at the following resources:
+Variáveis de Ambiente (.env.local)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+NEXT_PUBLIC_API_BASE_URL="http://localhost:5000/api"
+APP_ENV="development"
+SESSION_SECRET="base64"
+NEXT_PUBLIC_SUPABASE_URL="supabase_url"
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY="supabase_key"
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Variável                             | Uso                                                                                  |
+| ------------------------------------ | ------------------------------------------------------------------------------------ |
+| NEXT_PUBLIC_API_BASE_URL             | Obrigatório. Define o endereço base da sua API de backend para requisições.          |
+| APP_ENV                              | Geral. Define o ambiente de execução da aplicação.                                   |
+| SESSION_SECRET                       | Segurança. Chave secreta usada para criptografia de sessões. Deve ser forte e única. |
+| NEXT_PUBLIC_SUPABASE_URL             | URL do seu projeto Supabase, se utilizado para persistência de dados ou Auth.        |
+| NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY | Chave pública (anon key) do Supabase para acesso do lado do cliente.                 |
 
-## Deploy on Vercel
+## 4. Rodar o Projeto
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Inicie o servidor de desenvolvimento:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# startup-poc-web
+```
+npm run dev
+#or
+yarn dev
+```
+
+O aplicativo estará disponível em http://localhost:3000.
+
+# ℹ️ Informações Adicionais
+
+Configuração de Rotas: Este projeto Next.js utiliza o App Router. Certifique-se de que a sua estrutura de pastas (/app) e o arquivo next.config.js estejam configurados corretamente para o roteamento de cada página (/login, /dashboard, etc.).
