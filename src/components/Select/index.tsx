@@ -21,14 +21,22 @@ export type GroupOptions = {
 };
 
 type SelectProps = {
-  width: number;
+  width?: number;
   placeholder: string;
   options: SelectOption[] | GroupOptions[];
+  value: string;
+  onValueChange?: (value: string) => void;
 };
 
-export const Select = ({ width = 180, placeholder, options = [] }: SelectProps) => {
+export const Select = ({
+  width = 180,
+  placeholder,
+  options = [],
+  value,
+  onValueChange,
+}: SelectProps) => {
   return (
-    <SelectComponent>
+    <SelectComponent value={value} onValueChange={onValueChange}>
       <SelectTrigger className={`w-[${width}px]`}>
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>

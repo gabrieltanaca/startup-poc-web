@@ -10,6 +10,7 @@ export const pt = {
     modal_confirm_delete: 'Sim, Excluir',
     modal_cancel: 'Cancelar',
     searching: 'Buscando...',
+    moreDetails: 'Mais detalhes',
   },
   //------------------- TABELA -------------------
   table: {
@@ -70,6 +71,7 @@ export const pt = {
     smartSearch: 'Pesquisa Inteligente',
     noResults: 'Nenhum lugar encontrado.',
     summary: 'Resumo',
+    usersRating: 'usuários avaliaram esse local!',
   },
   // ------------------- DASHBOARD -------------------
   dashboard: {
@@ -156,6 +158,50 @@ export const pt = {
 
     toast_delete_all_success: 'Histórico excluído com sucesso!',
     toast_delete_one_success: 'Pesquisa excluída com sucesso!',
+  },
+  // ------------------- CONFIGURAÇÕES -------------------
+  settings: {
+    page_title: 'Configurações',
+
+    password_error_all_fields: 'Preencha todos os campos de senha.',
+    password_error_mismatch: 'As novas senhas não coincidem.',
+    password_error_same: 'A nova senha não pode ser igual à senha atual.',
+    toast_password_success: 'Senha atualizada com sucesso!',
+    toast_password_generic_error: 'Erro ao atualizar a senha. Tente novamente.',
+
+    password_section_title: 'Mudar Senha',
+    password_section_desc: 'Atualize a sua senha para manter sua conta segura.',
+    label_current_password: 'Senha Atual',
+    label_new_password: 'Nova Senha',
+    label_confirm_password: 'Confirmar Nova Senha',
+    button_save_password: 'Salvar Nova Senha',
+
+    general_section_title: 'Configurações Gerais',
+    general_section_desc: 'Ajustes de interface, idioma e notificações.',
+
+    theme_label: 'Tema da Interface',
+    theme_desc: 'Escolha entre claro, escuro ou sistema.',
+    theme_placeholder: 'Selecionar tema',
+    theme_light: 'Claro',
+    theme_dark: 'Escuro',
+    theme_system: 'Sistema',
+
+    language_label: 'Idioma',
+    language_desc: 'Mude o idioma da aplicação.',
+    language_placeholder: 'Selecionar idioma',
+
+    notifications_label: 'Notificações por Email',
+    notifications_desc: 'Receba atualizações importantes e alertas.',
+  },
+  // ------------------- TAGS -------------------
+  tags: {
+    locality: 'Localidade',
+    country: 'País',
+    restaurant: 'Restaurante',
+    store: 'Loja',
+    attraction: 'Atração',
+    park: 'Parque',
+    station: 'Estação',
   },
 };
 

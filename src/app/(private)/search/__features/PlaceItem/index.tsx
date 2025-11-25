@@ -1,17 +1,23 @@
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/Language';
 import { PlaceItem } from '@/types/search';
 import { Clock, Dot, GripVertical, MapPin, Star } from 'lucide-react';
 import Image from 'next/image';
+import { useMemo } from 'react';
+import { getTags } from '../../constants';
 
 type PlaceCardProps = {
   place: PlaceItem;
   setSelectedPlace: (place: PlaceItem) => void;
   isSelected: boolean;
+  isSmartSearch?: boolean;
 };
 
-const PlaceCard = ({ isSelected, setSelectedPlace, place }: PlaceCardProps) => {
+const PlaceCard = ({ isSelected, setSelectedPlace, place, isSmartSearch }: PlaceCardProps) => {
   const { t } = useLanguage();
+
+  const tags = useMemo(() => getTags(place.types, t), [place, t]);
 
   return (
     <div
@@ -25,14 +31,25 @@ const PlaceCard = ({ isSelected, setSelectedPlace, place }: PlaceCardProps) => {
       </div>
       <div className="grow">
         <p className="font-semibold">{place.name}</p>
-        <div className="flex flex-col items-start gap-2 text-sm">
+        <div className="flex flex-col items-start gap-1 text-sm">
           <div className="text-muted-foreground flex justify-center gap-1">
-            <MapPin className="min-h-3 min-w-3" />
+            <MapPin className="mt-1 h-3 min-h-3 w-3 min-w-3" />
             <span>{place.formatted_address}</span>
           </div>
           <div className="flex items-center justify-center gap-1 text-amber-300">
             <Star className="h-3 w-3" />
             <span>{place.rating || t.search.noRatings}</span>
+          </div>
+          <div className="flex gap-2">
+            {tags?.map((tag) => (
+              <Badge
+                key={tag}
+                variant="secondary"
+                className="bg-primary/20 text-primary dark:text-primary"
+              >
+                {tag}
+              </Badge>
+            ))}
           </div>
         </div>
       </div>

@@ -67,7 +67,7 @@ const AnalyticsPage = () => {
 
   return (
     <div className="flex h-full flex-1 flex-col overflow-hidden md:flex-row">
-      <aside className="bg-muted/20 w-full flex-shrink-0 border-b p-4 md:w-64 md:border-r md:border-b-0">
+      <aside className="bg-muted/20 w-full shrink-0 border-b p-4 md:w-64 md:border-r md:border-b-0">
         <h3 className="mb-4 flex items-center text-lg font-semibold">
           <Filter className="mr-2 h-5 w-5" />
           {t.analytics.filters_title}

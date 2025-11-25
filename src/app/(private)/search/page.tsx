@@ -1,24 +1,23 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import dynamic from 'next/dynamic';
-import { SlidersHorizontal, GripVertical, Loader2, Zap } from 'lucide-react';
+import { GripVertical, Loader2 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 
 import { useLanguage } from '@/contexts/Language';
-import { Dropdown, DropdownOption } from '@/components/Dropdown';
+import { DropdownOption } from '@/components/Dropdown';
 import { getShowOptions, getSortOptions } from './constants';
 import { SearchInput } from '@/components/SearchInput';
 import PlaceCard from './__features/PlaceItem';
 import { getSearch, getSmartSearch } from '@/service/search';
 import { PlaceItem } from '@/types/search';
 import { MOCK_PLACES } from '@/lib/mock-places';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import SearchFilters from './__features/SearchFilters';
+import PlaceInfoCard from './__features/PlaceInfoCard';
+import { types } from 'util';
 
 const DynamicMapComponent = dynamic(() => import('@/components/DynamicMap'), {
   ssr: false,
@@ -85,20 +84,13 @@ const SearchPage = () => {
       response = await getSearch(searchTerm);
     }
 
-    setSummary(summary);
+    setSummary(response?.summary || '');
     setDataPlaces(response?.places || []);
     setIsLoading(false);
   };
 
   useEffect(() => {
-    if (!searchTerm) {
-      setDataPlaces([]);
-      setIsLoading(false);
-      return;
-    }
-
     setIsLoading(true);
-
     const handler = setTimeout(() => {
       searchPlaces();
     }, DEBOUNCE_DELAY);
@@ -173,16 +165,9 @@ const SearchPage = () => {
 
       <section className="relative hidden flex-1 md:block">
         <DynamicMapComponent places={MOCK_PLACES} />
-        {summary && (
+        {selectedPlace && (
           <div className="absolute bottom-2 left-2 z-1000 w-[400px] max-w-[400px]">
-            <Card>
-              <CardHeader>
-                <CardTitle>{t.search.summary}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground text-sm">{summary}</p>
-              </CardContent>
-            </Card>
+            <PlaceInfoCard translation={t} summary={summary} {...selectedPlace} />
           </div>
         )}
       </section>

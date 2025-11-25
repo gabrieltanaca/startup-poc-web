@@ -17,7 +17,7 @@ import { createSession } from '@/lib/session';
 
 const loginSchema = z.object({
   email: z.string().email({ message: 'E-mail inválido' }),
-  password: z.string().min(6, { message: 'Senha deve ter ao menos 6 caracteres' }),
+  password: z.string().min(8, { message: 'Senha deve ter ao menos 8 caracteres' }),
 });
 
 type LoginFormValues = z.infer<typeof loginSchema>;

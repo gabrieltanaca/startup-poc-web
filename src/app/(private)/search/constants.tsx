@@ -31,3 +31,27 @@ export const getSortOptions = (t: TranslateType): DropdownOption[] => [
     ),
   },
 ];
+
+export const getTags = (types: string[], t: TranslateType) => {
+  const tagValues = {
+    administrative_area: t.tags.locality,
+    locality: t.tags.locality,
+    country: t.tags.country,
+    restaurant: t.tags.restaurant,
+    store: t.tags.store,
+    attraction: t.tags.attraction,
+    park: t.tags.park,
+    station: t.tags.station,
+  };
+
+  const tags = Object.entries(tagValues)
+    .map(([key, value]) => {
+      if (types.join(' ').includes(key)) {
+        return value;
+      }
+      return '';
+    })
+    .filter((f) => !!f);
+
+  return [...new Set(tags)];
+};

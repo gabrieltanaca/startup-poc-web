@@ -12,6 +12,7 @@ export const en: TranslateType = {
     modal_confirm_delete: 'Yes, Delete',
     modal_cancel: 'Cancel',
     searching: 'Searching...',
+    moreDetails: 'More details',
   },
   table: {
     search_placeholder: 'Search by term or summary...',
@@ -70,6 +71,8 @@ export const en: TranslateType = {
     smartSearch: 'Smart Search',
     noResults: 'No places found.',
     smartPlaceholder: 'IA Searching...',
+    summary: 'Summary',
+    usersRating: 'users have rated this place!',
   },
   // ------------------- DASHBOARD -------------------
   dashboard: {
@@ -156,5 +159,49 @@ export const en: TranslateType = {
 
     toast_delete_all_success: 'History successfully deleted!',
     toast_delete_one_success: 'Search entry successfully deleted!',
+  },
+  // ------------------- SETTINGS -------------------
+  settings: {
+    page_title: 'Settings',
+
+    password_error_all_fields: 'Please fill in all password fields.',
+    password_error_mismatch: 'New passwords do not match.',
+    password_error_same: 'The new password cannot be the same as the current password.',
+    toast_password_success: 'Password updated successfully!',
+    toast_password_generic_error: 'Error updating password. Please try again.',
+
+    password_section_title: 'Change Password',
+    password_section_desc: 'Update your password to keep your account secure.',
+    label_current_password: 'Current Password',
+    label_new_password: 'New Password',
+    label_confirm_password: 'Confirm New Password',
+    button_save_password: 'Save New Password',
+
+    general_section_title: 'General Settings',
+    general_section_desc: 'Interface, language, and notification adjustments.',
+
+    theme_label: 'Interface Theme',
+    theme_desc: 'Choose between light, dark, or system.',
+    theme_placeholder: 'Select theme',
+    theme_light: 'Light',
+    theme_dark: 'Dark',
+    theme_system: 'System',
+
+    language_label: 'Language',
+    language_desc: 'Change the application language.',
+    language_placeholder: 'Select language',
+
+    notifications_label: 'Email Notifications',
+    notifications_desc: 'Receive important updates and alerts.',
+  },
+  // ------------------- TAGS -------------------
+  tags: {
+    locality: 'Locality',
+    country: 'Country',
+    restaurant: 'Restaurant',
+    store: 'Store',
+    attraction: 'Attraction',
+    park: 'Park',
+    station: 'Station',
   },
 };
