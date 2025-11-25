@@ -21,12 +21,13 @@ export default function ThemeSwitch({
 }: ThemeSwitchProps) {
   const { t } = useLanguage();
   const { theme, toggleTheme } = useTheme();
+  const checked = theme === 'dark';
 
   return (
     <div className={cn('flex items-center gap-2', className)} {...props}>
       {hasLabel && <Label>{t.theme.label}</Label>}
       <Switch
-        checked={theme === 'dark'}
+        checked={checked}
         onChange={() => toggleTheme()}
         icon={
           showIcon ? (

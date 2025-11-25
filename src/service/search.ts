@@ -1,4 +1,4 @@
-import { AnalysisItem, AnalyzeMetaDataItem, SmartPlaceItem } from '@/types/search';
+import { AnalysisItem, AnalyzeMetaDataItem } from '@/types/search';
 import api from './api';
 import { PlaceItem } from '@/types/search';
 
@@ -15,7 +15,7 @@ export type SearchResponse = {
 
 export type SmartSearchResponse = {
   query: string;
-  places: SmartPlaceItem[];
+  places: PlaceItem[];
   summary: string;
   insights: string;
   source: string;
@@ -28,7 +28,7 @@ export async function getSearch(query?: string): Promise<SearchResponse | null> 
 }
 
 export async function getSmartSearch(query?: string): Promise<SmartSearchResponse | null> {
-  const response = await api.get<SmartSearchResponse>(`/search?q=${query}`);
+  const response = await api.get<SmartSearchResponse>(`/smart-search?q=${query}`);
 
   return response.ok ? response.data || null : null;
 }

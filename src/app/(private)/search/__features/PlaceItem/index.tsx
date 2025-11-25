@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { useLanguage } from '@/contexts/Language';
 import { PlaceItem } from '@/types/search';
 import { Clock, Dot, GripVertical, MapPin, Star } from 'lucide-react';
 import Image from 'next/image';
@@ -10,6 +11,8 @@ type PlaceCardProps = {
 };
 
 const PlaceCard = ({ isSelected, setSelectedPlace, place }: PlaceCardProps) => {
+  const { t } = useLanguage();
+
   return (
     <div
       className={`hover:bg-muted flex cursor-pointer items-center space-x-3 rounded-lg p-3 transition-colors ${
@@ -22,15 +25,14 @@ const PlaceCard = ({ isSelected, setSelectedPlace, place }: PlaceCardProps) => {
       </div>
       <div className="grow">
         <p className="font-semibold">{place.name}</p>
-        <div className="flex items-center space-x-1 text-sm">
-          <div className="text-muted-foreground flex items-center justify-center gap-1">
-            <MapPin className="h-3 w-3" />
+        <div className="flex flex-col items-start gap-2 text-sm">
+          <div className="text-muted-foreground flex justify-center gap-1">
+            <MapPin className="min-h-3 min-w-3" />
             <span>{place.formatted_address}</span>
           </div>
-          <Dot className="text-muted-foreground h-5 w-5" />
           <div className="flex items-center justify-center gap-1 text-amber-300">
             <Star className="h-3 w-3" />
-            <span>{place.rating || 'Sem avaliações'}</span>
+            <span>{place.rating || t.search.noRatings}</span>
           </div>
         </div>
       </div>

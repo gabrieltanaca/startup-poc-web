@@ -18,14 +18,6 @@ export type AnalyzeMetaDataItem = {
 
 export type PlaceItem = {
   name: string;
-  formatted_address: string;
-  rating: number;
-  user_ratings_total: number;
-  types: string[];
-};
-
-export type SmartPlaceItem = {
-  name: string;
   types: string[];
   rating: number;
   formatted_address: string;

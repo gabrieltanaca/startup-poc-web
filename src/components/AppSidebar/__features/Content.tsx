@@ -18,16 +18,16 @@ import {
 
 const Content = ({ translation: t }: { translation: TranslateType }) => {
   const routes = [
-    { label: t.sidebar.search, href: '/search', icon: <SearchIcon className="h-5 w-5" /> },
     {
       label: t.sidebar.dashboard,
       href: '/dashboard',
       icon: <LayoutDashboardIcon className="h-5 w-5" />,
     },
+    { label: t.sidebar.search, href: '/search', icon: <SearchIcon className="h-5 w-5" /> },
     { label: t.sidebar.history, href: '/history', icon: <HistoryIcon className="h-5 w-5" /> },
     {
-      label: t.sidebar.statistics,
-      href: '/statistics',
+      label: t.sidebar.analytics,
+      href: '/analytics',
       icon: <ChartColumnIncreasing className="h-5 w-5" />,
     },
     { label: t.sidebar.config, href: '/settings', icon: <Settings2Icon className="h-5 w-5" /> },

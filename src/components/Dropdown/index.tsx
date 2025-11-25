@@ -7,14 +7,14 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Label } from '../ui/label';
 import { cn } from '@/lib/utils';
-import { Languages } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 
 export type DropdownOption = React.HTMLAttributes<HTMLDivElement> & {
-  label: string;
+  label: string | React.ReactNode;
   value: string;
 };
 
@@ -24,8 +24,11 @@ type DropdownProps = {
   size?: number;
   defaultValue?: DropdownOption;
   options: DropdownOption[];
+  value?: DropdownOption;
   onSelect: (value: DropdownOption) => void;
   compact?: boolean;
+  compactIcon?: React.ReactNode;
+  align?: 'right' | 'left' | 'center';
 };
 
 export const Dropdown = ({
@@ -36,14 +39,20 @@ export const Dropdown = ({
   onSelect,
   size = 120,
   compact = false,
+  compactIcon = <ArrowUpRight />,
+  value,
+  align = 'left',
 }: DropdownProps) => {
   const [selectedOpt, setSelectedOpt] = useState<DropdownOption>(defaultValue || options[0]);
 
   const onSelectOpt = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, item: DropdownOption) => {
-    setSelectedOpt(item);
     onSelect(item);
     item.onClick?.(e);
   };
+
+  useEffect(() => {
+    !!value && setSelectedOpt(value);
+  }, [value]);
 
   return (
     <div className={cn('flex', 'flex-col', 'gap-2', `max-w-[${size}px]`, 'w-full')}>
@@ -54,15 +63,33 @@ export const Dropdown = ({
             <TooltipTrigger asChild>
               <Button
                 variant="outline"
-                className={cn('flex gap-2', compact && 'items-center justify-center')}
+                className={cn(
+                  'flex gap-2',
+                  {
+                    right: 'justify-end',
+                    left: 'justify-start',
+                    center: '',
+                  }[align],
+                  compact && 'items-center justify-center',
+                )}
               >
-                {compact ? <Languages /> : triggerTitle || selectedOpt.label}
+                {compact ? compactIcon : triggerTitle || selectedOpt.label}
               </Button>
             </TooltipTrigger>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             {options.map((item) => (
-              <DropdownMenuItem key={item.value} onClick={(e) => onSelectOpt(e, item)}>
+              <DropdownMenuItem
+                key={item.value}
+                onClick={(e) => onSelectOpt(e, item)}
+                className={cn(
+                  {
+                    right: 'justify-end!',
+                    left: 'justify-start!',
+                    center: '',
+                  }[align],
+                )}
+              >
                 {item.label}
               </DropdownMenuItem>
             ))}

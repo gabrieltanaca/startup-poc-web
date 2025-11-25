@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
-import { SlidersHorizontal, GripVertical, Loader2 } from 'lucide-react';
+import { SlidersHorizontal, GripVertical, Loader2, Zap } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 
 import { useLanguage } from '@/contexts/Language';
@@ -13,9 +14,11 @@ import { Dropdown, DropdownOption } from '@/components/Dropdown';
 import { getShowOptions, getSortOptions } from './constants';
 import { SearchInput } from '@/components/SearchInput';
 import PlaceCard from './__features/PlaceItem';
-import { getSearch } from '@/service/search';
+import { getSearch, getSmartSearch } from '@/service/search';
 import { PlaceItem } from '@/types/search';
 import { MOCK_PLACES } from '@/lib/mock-places';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import SearchFilters from './__features/SearchFilters';
 
 const DynamicMapComponent = dynamic(() => import('@/components/DynamicMap'), {
   ssr: false,
@@ -26,41 +29,93 @@ const DynamicMapComponent = dynamic(() => import('@/components/DynamicMap'), {
   ),
 });
 
+const DEBOUNCE_DELAY = 500;
+
 const SearchPage = () => {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
 
   const showOpts = getShowOptions(t);
   const sortOpts = getSortOptions(t);
 
   const [searchTerm, setSearchTerm] = useState('');
-  const [places, setPlaces] = useState<PlaceItem[]>([]);
+  const [dataPlaces, setDataPlaces] = useState<PlaceItem[]>([]);
+  const [filteredPlaces, setFilteredPlaces] = useState<PlaceItem[]>([]);
   const [selectedPlace, setSelectedPlace] = useState<PlaceItem | null>(null);
+  const [summary, setSummary] = useState<string>('');
+  const [isSmartSearch, setIsSmartSearch] = useState(false);
 
   const [selectShowOpt, setSelectShowOpt] = useState<DropdownOption>(showOpts[0]);
   const [selectSortOpt, setSelectSortOpt] = useState<DropdownOption>(sortOpts[0]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const searchPlaces = async () => {
-    setIsLoading(true);
-    const response = await getSearch(searchTerm);
+  const filterPlaces = (places: PlaceItem[]): PlaceItem[] => {
+    let newPlaces = places;
 
-    setPlaces(response?.places || []);
+    if (selectShowOpt.value === 'restaurant') {
+      newPlaces = newPlaces.filter((x) => x.types.includes('restaurant'));
+    }
+
+    const sortedPlaces = newPlaces.sort((a, b) => {
+      const ratingA = parseFloat(a.rating as any) * 10 || 0;
+      const ratingB = parseFloat(b.rating as any) * 10 || 0;
+
+      if (selectSortOpt.value === 'rating_ascending') {
+        return ratingA - ratingB;
+      } else {
+        return ratingB - ratingA;
+      }
+    });
+
+    return sortedPlaces;
+  };
+
+  const searchPlaces = async () => {
+    if (!searchTerm) {
+      setDataPlaces([]);
+      setIsLoading(false);
+      return;
+    }
+
+    setIsLoading(true);
+    let response;
+
+    if (isSmartSearch) {
+      response = await getSmartSearch(searchTerm);
+    } else {
+      response = await getSearch(searchTerm);
+    }
+
+    setSummary(summary);
+    setDataPlaces(response?.places || []);
     setIsLoading(false);
   };
 
   useEffect(() => {
-    searchPlaces();
-  }, [searchTerm]);
+    if (!searchTerm) {
+      setDataPlaces([]);
+      setIsLoading(false);
+      return;
+    }
 
-  const filteredPlaces = useMemo(() => {
-    if (!searchTerm) return MOCK_PLACES;
-    return MOCK_PLACES.filter(
-      (place) =>
-        place.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        place.city.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        place.country.toLowerCase().includes(searchTerm.toLowerCase()),
-    );
-  }, [searchTerm]);
+    setIsLoading(true);
+
+    const handler = setTimeout(() => {
+      searchPlaces();
+    }, DEBOUNCE_DELAY);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchTerm, isSmartSearch]);
+
+  useEffect(() => {
+    setSelectShowOpt((prev) => showOpts?.find((x) => x.value === prev.value) || prev);
+    setSelectSortOpt((prev) => sortOpts?.find((x) => x.value === prev.value) || prev);
+  }, [lang]);
+
+  useEffect(() => {
+    setFilteredPlaces(filterPlaces(dataPlaces));
+  }, [selectShowOpt, selectSortOpt, dataPlaces]);
 
   return (
     <div className="flex h-full w-full overflow-hidden">
@@ -75,19 +130,23 @@ const SearchPage = () => {
         </header>
 
         <SearchInput
-          placeholder={t.search.placeholder}
+          placeholder={isSmartSearch ? t.search.smartPlaceholder : t.search.placeholder}
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
+          smartSearch={isSmartSearch}
         />
 
-        <div className="mb-4 flex flex-wrap gap-2">
-          <Dropdown options={showOpts} onSelect={(opt) => setSelectShowOpt(opt)} />
-          <Dropdown options={sortOpts} onSelect={(opt) => setSelectSortOpt(opt)} />
-          <Button variant="outline" className="flex items-center space-x-1">
-            <SlidersHorizontal className="h-4 w-4" />
-            <span>{t.search.filters}</span>
-          </Button>
-        </div>
+        <SearchFilters
+          translation={t}
+          isSmartSearch={isSmartSearch}
+          setIsSmartSearch={setIsSmartSearch}
+          showOpts={showOpts}
+          selectShowOpt={selectShowOpt}
+          onSelectShow={(opt) => setSelectShowOpt(opt)}
+          sortOpts={sortOpts}
+          selectSortOpt={selectSortOpt}
+          onSelectSort={(opt) => setSelectSortOpt(opt)}
+        />
 
         <Separator className="mb-4" />
 
@@ -95,12 +154,12 @@ const SearchPage = () => {
           {isLoading ? (
             <div className="flex items-center justify-center gap-1">
               <Loader2 className="h-4 w-4 animate-spin" />
-              <p className="text-muted-foreground">Buscando...</p>
+              <p className="text-muted-foreground">{t.general.searching}</p>
             </div>
-          ) : places.length === 0 ? (
-            <p className="text-muted-foreground text-center">Nenhum lugar encontrado.</p>
+          ) : filteredPlaces.length === 0 ? (
+            <p className="text-muted-foreground text-center">{t.search.noResults}</p>
           ) : (
-            places.map((place) => (
+            filteredPlaces.map((place) => (
               <PlaceCard
                 key={place.formatted_address}
                 place={place}
@@ -112,8 +171,20 @@ const SearchPage = () => {
         </div>
       </section>
 
-      <section className="hidden flex-1 md:block">
-        <DynamicMapComponent places={filteredPlaces} />
+      <section className="relative hidden flex-1 md:block">
+        <DynamicMapComponent places={MOCK_PLACES} />
+        {summary && (
+          <div className="absolute bottom-2 left-2 z-1000 w-[400px] max-w-[400px]">
+            <Card>
+              <CardHeader>
+                <CardTitle>{t.search.summary}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground text-sm">{summary}</p>
+              </CardContent>
+            </Card>
+          </div>
+        )}
       </section>
     </div>
   );

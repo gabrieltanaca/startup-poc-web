@@ -52,6 +52,7 @@ export const LoginForm = ({ className, ...props }: HTMLAttributes<HTMLFormElemen
       } else {
         toast.success('Login bem-sucedido! Sincronizando sessão...');
         await createSession(auth.user.id);
+        router.push('/dashboard');
       }
     } catch (err) {
       toast.error(`Ocorreu um erro. Verifique a conexão. Erro: ${err}`);

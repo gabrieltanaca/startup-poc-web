@@ -12,7 +12,6 @@ export const useToast = () => {
         ...options,
       });
     },
-
     error: (message: string, options?: ExternalToast) => {
       toast.error(message, {
         duration: 2500,
@@ -21,17 +20,14 @@ export const useToast = () => {
         ...options,
       });
     },
-
     info: (message: string, options?: ExternalToast) => {
       toast.info(message, {
         duration: 2500,
         position: 'top-right',
         className: '!bg-blue-600',
-
         ...options,
       });
     },
-
     default: (message: string, options?: ExternalToast) => {
       toast(message, { duration: 2500, position: 'top-right', ...options });
     },

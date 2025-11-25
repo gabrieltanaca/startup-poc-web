@@ -67,12 +67,12 @@ async function customFetch<T>(
     }
 
     // verifica se tem corpo
-    if (!Number(request.headers.get('Content-Length'))) {
+    /*  if (!Number(request.headers.get('Content-Length'))) {
       return {
         ok: !!request.ok,
         data: null,
       };
-    }
+    } */
 
     const response = await request.json();
     if (request.ok) {
