@@ -61,7 +61,7 @@ O portal é composto por seis páginas principais, cada uma com um propósito di
 
 **Chamadas:**
 
-- **GET /api/search:**Executa a busca padrão de locais.
+- **GET /api/search:** Executa a busca padrão de locais.
 - **GET /api/smart-search:** Executa a busca aprimorada por IA.
 
 #### 5. Estatísticas Administrativas (analytics.tsx)
@@ -99,7 +99,7 @@ Siga os passos abaixo para configurar e executar o projeto em seu ambiente de de
 
 ```
 git clone https://github.com/gabrieltanaca/startup-poc-web.git
-cd ponto-certo
+cd startup-poc-web
 ```
 
 ## 2. Instalar Dependências
