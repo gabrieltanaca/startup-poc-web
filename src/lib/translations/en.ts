@@ -101,6 +101,11 @@ export const en: TranslateType = {
     table_header_status: 'Status',
     table_header_date: 'Date',
     view_all_operations: 'View all operations',
+
+    legend_revenue: 'Revenue',
+    legend_registrations: 'Registrations',
+    statistics_chart_title: 'Revenue and User Statistics',
+    statistics_chart_desc: 'Annual overview of revenue and new registrations.',
   },
   // ------------------- ANALYTICS -------------------
   analytics: {

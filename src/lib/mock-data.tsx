@@ -43,21 +43,6 @@ export const metricTiles = (t: TranslateType): MetricTileItem[] => [
   },
 ];
 
-export const mockSearchData = [
-  { name: 'Jan', total: 4000 },
-  { name: 'Fev', total: 3000 },
-  { name: 'Mar', total: 2000 },
-  { name: 'Abr', total: 2780 },
-  { name: 'Mai', total: 1890 },
-  { name: 'Jun', total: 2390 },
-  { name: 'Jul', total: 3490 },
-  { name: 'Ago', total: 4200 },
-  { name: 'Set', total: 3800 },
-  { name: 'Out', total: 4500 },
-  { name: 'Nov', total: 5100 },
-  { name: 'Dez', total: 6000 },
-];
-
 export const mockOperations = [
   {
     id: 'OP-001',

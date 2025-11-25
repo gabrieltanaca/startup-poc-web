@@ -100,6 +100,11 @@ export const pt = {
     table_header_status: 'Status',
     table_header_date: 'Data',
     view_all_operations: 'Ver todas as operações',
+
+    legend_revenue: 'Receita',
+    legend_registrations: 'Registros',
+    statistics_chart_title: 'Estatísticas de Receita e Usuários',
+    statistics_chart_desc: 'Visão geral anual de receita e novos registros.',
   },
   // ------------------- ESTATÍSTICAS -------------------
   analytics: {

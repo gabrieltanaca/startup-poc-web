@@ -5,14 +5,18 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 
 import SimpleAreaChart from './__features/SimpleAreaChart';
-import { mockSearchData, mockOperations, metricTiles } from '@/lib/mock-data';
+import { mockOperations, metricTiles } from '@/lib/mock-data';
 import { useLanguage } from '@/contexts/Language';
 import MetricTile from './__features/MetricTile';
 import OperationsHistory from './__features/OperationsHistory';
+import AutoSlidingCarousel from '@/components/AutoSlideCarrousel';
 
 const DashboardPage = () => {
   const { t } = useLanguage();
-  const metrics = metricTiles(t);
+
+  const metricSlides = metricTiles(t).map((tile, index) => (
+    <MetricTile key={`metric-${index}`} {...tile} />
+  ));
 
   return (
     <div className="flex-1 space-y-8 p-4 pt-6 md:p-8">
@@ -24,25 +28,17 @@ const DashboardPage = () => {
       </div>
 
       <Separator />
-
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {metrics.map((tile, index) => (
-          <MetricTile key={index} {...tile} />
-        ))}
-      </div>
+      <AutoSlidingCarousel
+        items={metricSlides}
+        className="h-[150px]"
+        interval={2000}
+        visibleItems={3}
+      />
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-        <Card className="col-span-1 md:col-span-4 lg:col-span-4">
-          <CardHeader>
-            <CardTitle>{t.dashboard.overview_chart}</CardTitle>
-          </CardHeader>
-          <CardContent className="h-[350px] pl-2">
-            <SimpleAreaChart data={mockSearchData} />
-          </CardContent>
-          <CardFooter>
-            <p className="text-muted-foreground text-sm">{t.dashboard.chart_footer_tip}</p>
-          </CardFooter>
-        </Card>
+        <div className="col-span-1 md:col-span-4 lg:col-span-4">
+          <SimpleAreaChart />
+        </div>
 
         <OperationsHistory operations={mockOperations} />
       </div>
