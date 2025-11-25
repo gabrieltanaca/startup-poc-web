@@ -7,12 +7,11 @@ Este projeto é uma POC construída com Next.js, focado em gerenciamento de busc
 O projeto utiliza um stack moderno e robusto:
 
 - Framework: Next.js (App Router)
-
-* Linguagem: TypeScript
-* Estilização: TailwindCSS
-* Componentes UI: RadixUI + Shadcn/UI
-* Formulários: React Hook Form e Zod
-* Banco de Dados/Autenticação: Supabase (opcional, configurado via ENVs)
+- Linguagem: TypeScript
+- Estilização: TailwindCSS
+- Componentes UI: RadixUI + Shadcn/UI
+- Formulários: React Hook Form e Zod
+- Banco de Dados/Autenticação: Supabase (opcional, configurado via ENVs)
 
 # 💻 Estrutura das Páginas e Funcionalidades
 
