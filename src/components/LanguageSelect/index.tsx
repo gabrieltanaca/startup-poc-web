@@ -13,7 +13,7 @@ type LanguageSelectProps = {
 
 export default function LanguageSelect({ compact = false }: LanguageSelectProps) {
   const { t, lang, setLang, langOptions } = useLanguage();
-  const defaultOption = langOptions.find((x) => x.value === lang);
+  const selectedOption = langOptions.find((x) => x.value === lang);
 
   return (
     <div className="flex items-center gap-2">
@@ -21,7 +21,7 @@ export default function LanguageSelect({ compact = false }: LanguageSelectProps)
       <Dropdown
         options={langOptions}
         onSelect={({ value }) => setLang(value as Language)}
-        defaultValue={defaultOption}
+        value={selectedOption}
         compact={compact}
         compactIcon={<Languages />}
       />

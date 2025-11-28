@@ -13,7 +13,6 @@ import { useLanguage } from '@/contexts/Language';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { createSession } from '@/lib/session';
 
 const loginSchema = z.object({
   email: z.string().email({ message: 'E-mail inválido' }),
@@ -51,11 +50,24 @@ export const LoginForm = ({ className, ...props }: HTMLAttributes<HTMLFormElemen
         toast.error(`Falha na Autenticação. Erro: Credenciais Inválidas`);
       } else {
         toast.success('Login bem-sucedido! Sincronizando sessão...');
-        await createSession(auth.user.id);
+
+        // Criar sessão através da API route
+        const sessionResponse = await fetch('/api/auth/session', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId: auth.user.id }),
+        });
+
+        if (!sessionResponse.ok) {
+          const errorData = await sessionResponse.json();
+          throw new Error(errorData.error || 'Falha ao criar sessão');
+        }
+
         router.push('/dashboard');
       }
     } catch (err) {
-      toast.error(`Ocorreu um erro. Verifique a conexão. Erro: ${err}`);
+      const errorMessage = err instanceof Error ? err.message : 'Erro desconhecido';
+      toast.error(`Ocorreu um erro. Verifique a conexão. Erro: ${errorMessage}`);
     }
 
     setIsLoading(false);
