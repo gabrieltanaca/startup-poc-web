@@ -17,8 +17,9 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ success: true });
     } catch (error) {
         console.error('Erro ao criar sessão:', error);
+        const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido ao criar sessão';
         return NextResponse.json(
-            { error: 'Erro ao criar sessão' },
+            { error: errorMessage },
             { status: 500 }
         );
     }
