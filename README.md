@@ -118,7 +118,7 @@ Variáveis de Ambiente (.env.local)
 
 ```
 NEXT_PUBLIC_API_BASE_URL="http://localhost:5000/api"
-APP_ENV="development"
+NEXT_PUBLIC_APP_ENV="development"
 SESSION_SECRET="base64"
 NEXT_PUBLIC_SUPABASE_URL="supabase_url"
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY="supabase_key"
@@ -127,7 +127,7 @@ NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY="supabase_key"
 | Variável                             | Uso                                                                                                                                                                   |
 | ------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | NEXT_PUBLIC_API_BASE_URL             | **Obrigatório**. Define o endereço base da sua API de backend.                                                                                                        |
-| APP_ENV                              | Geral. Define o ambiente de execução da aplicação.                                                                                                                    |
+| NEXT_PUBLIC_APP_ENV                  | **Obrigatório**. Geral. Define o ambiente de execução da aplicação.                                                                                                   |
 | SESSION_SECRET                       | **Obrigatório**. Chave secreta usada para criptografia de sessões JWT. Deve ser uma string aleatória de pelo menos 32 caracteres. Gere com: `openssl rand -base64 32` |
 | NEXT_PUBLIC_SUPABASE_URL             | URL do seu projeto Supabase, se utilizado para persistência de dados ou Auth.                                                                                         |
 | NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY | Chave pública (anon key) do Supabase para acesso do lado do cliente.                                                                                                  |
