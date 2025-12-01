@@ -126,7 +126,7 @@ NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY="supabase_key"
 
 | Variável                             | Uso                                                                                                                                                                   |
 | ------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| NEXT_PUBLIC_API_BASE_URL             | Obrigatório. Define o endereço base da sua API de backend para requisições.                                                                                           |
+| NEXT_PUBLIC_API_BASE_URL             | **Obrigatório**. Define o endereço base da sua API de backend.                                                                                                        |
 | APP_ENV                              | Geral. Define o ambiente de execução da aplicação.                                                                                                                    |
 | SESSION_SECRET                       | **Obrigatório**. Chave secreta usada para criptografia de sessões JWT. Deve ser uma string aleatória de pelo menos 32 caracteres. Gere com: `openssl rand -base64 32` |
 | NEXT_PUBLIC_SUPABASE_URL             | URL do seu projeto Supabase, se utilizado para persistência de dados ou Auth.                                                                                         |
