@@ -8,14 +8,21 @@ type SessionPayload = {
     expiresAt: Date;
 };
 
+let cachedEncodedKey: Uint8Array | null = null;
+
 function getEncodedKey(): Uint8Array {
+    if (cachedEncodedKey) {
+        return cachedEncodedKey;
+    }
+
     const secretKey = process.env.SESSION_SECRET;
-    
+
     if (!secretKey) {
         throw new Error('SESSION_SECRET não está definida nas variáveis de ambiente');
     }
-    
-    return new TextEncoder().encode(secretKey);
+
+    cachedEncodedKey = new TextEncoder().encode(secretKey);
+    return cachedEncodedKey;
 }
 
 export async function encrypt(payload: SessionPayload) {
