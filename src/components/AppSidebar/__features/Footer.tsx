@@ -16,7 +16,7 @@ const Footer = ({ open, translation: t }: FooterProps) => {
   const router = useRouter();
 
   const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut();
+    const { error } = await supabase().auth.signOut();
 
     if (error) {
       console.error('Erro ao fazer logout:', error);

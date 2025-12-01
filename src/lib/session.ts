@@ -8,25 +8,27 @@ type SessionPayload = {
     expiresAt: Date;
 };
 
-const secretKey = process.env.SESSION_SECRET;
-
-if (!secretKey) {
-    throw new Error('SESSION_SECRET não está definida nas variáveis de ambiente');
+function getEncodedKey(): Uint8Array {
+    const secretKey = process.env.SESSION_SECRET;
+    
+    if (!secretKey) {
+        throw new Error('SESSION_SECRET não está definida nas variáveis de ambiente');
+    }
+    
+    return new TextEncoder().encode(secretKey);
 }
-
-const encodedKey = new TextEncoder().encode(secretKey);
 
 export async function encrypt(payload: SessionPayload) {
     return new SignJWT(payload)
         .setProtectedHeader({ alg: 'HS256' })
         .setIssuedAt()
         .setExpirationTime('7d')
-        .sign(encodedKey);
+        .sign(getEncodedKey());
 }
 
 export async function decrypt(session: string | undefined = '') {
     try {
-        const { payload } = await jwtVerify(session, encodedKey, {
+        const { payload } = await jwtVerify(session, getEncodedKey(), {
             algorithms: ['HS256'],
         });
         return payload;

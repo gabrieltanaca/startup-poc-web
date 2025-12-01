@@ -41,7 +41,7 @@ export const LoginForm = ({ className, ...props }: HTMLAttributes<HTMLFormElemen
     setIsLoading(true);
 
     try {
-      const { data: auth, error } = await supabase.auth.signInWithPassword({
+      const { data: auth, error } = await supabase().auth.signInWithPassword({
         email: data.email,
         password: data.password,
       });
